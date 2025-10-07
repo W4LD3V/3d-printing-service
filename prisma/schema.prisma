@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String
+  role      Role     @default(USER)
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Order {
+  id          String   @id @default(cuid())
+  userId      String
+  modelUrl    String
+  plasticId   String
+  colorId     String
+  status      OrderStatus @default(PENDING)
+  totalPrice  Float
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plastic     Plastic  @relation(fields: [plasticId], references: [id])
+  color       Color    @relation(fields: [colorId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("orders")
+}
+
+model Plastic {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  price       Float
+  description String?
+  orders      Order[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("plastics")
+}
+
+model Color {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  hexCode     String
+  orders      Order[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("colors")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  CANCELLED
+}
