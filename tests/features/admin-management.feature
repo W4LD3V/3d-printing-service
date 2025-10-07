@@ -59,3 +59,4 @@ Feature: Admin Management
     And I click the "Update" button
     Then the color should be updated in the table
     And the new hex code should be reflected
+

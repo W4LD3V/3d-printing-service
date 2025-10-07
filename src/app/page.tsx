@@ -13,7 +13,13 @@ export default async function Home() {
     <div className="min-h-screen bg-gray-50">
       <Navbar session={session} />
       <main>
-        <Hero />
+        <Suspense
+          fallback={
+            <div className="h-96 bg-gradient-to-r from-blue-600 to-purple-600"></div>
+          }
+        >
+          <Hero />
+        </Suspense>
         <Features />
       </main>
     </div>

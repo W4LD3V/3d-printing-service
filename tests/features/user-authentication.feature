@@ -37,3 +37,4 @@ Feature: User Authentication
     And I click the "Sign in" button
     Then I should see an error message
     And I should remain on the signin page
+

@@ -38,3 +38,4 @@ Feature: Order Management
     When I view the order details
     Then I should see all order information
     And I should see the plastic type and color details
+

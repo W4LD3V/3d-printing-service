@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface CreateOrderModalProps {
   userId: string;
@@ -15,19 +15,29 @@ export function CreateOrderModal({ userId, onClose }: CreateOrderModalProps) {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [plastics, setPlastics] = useState<any[]>([]);
+  const [colors, setColors] = useState<any[]>([]);
 
-  // Mock data for now
-  const plastics = [
-    { id: "1", name: "PLA", price: 25.0 },
-    { id: "2", name: "ABS", price: 30.0 },
-    { id: "3", name: "PETG", price: 35.0 },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [plasticsRes, colorsRes] = await Promise.all([
+          fetch("/api/plastics"),
+          fetch("/api/colors"),
+        ]);
 
-  const colors = [
-    { id: "1", name: "White", hexCode: "#FFFFFF" },
-    { id: "2", name: "Black", hexCode: "#000000" },
-    { id: "3", name: "Red", hexCode: "#FF0000" },
-  ];
+        const plasticsData = await plasticsRes.json();
+        const colorsData = await colorsRes.json();
+
+        setPlastics(plasticsData);
+        setColors(colorsData);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,12 +49,32 @@ export function CreateOrderModal({ userId, onClose }: CreateOrderModalProps) {
     }
 
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          modelUrl: formData.modelUrl,
+          plasticId: formData.plasticId,
+          colorId: formData.colorId,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create order");
+      }
+
       setLoading(false);
       onClose();
-      alert("Order created successfully! (This is a demo)");
-    }, 1000);
+      // Refresh the page to show the new order
+      window.location.reload();
+    } catch (err: any) {
+      setError(err.message || "Failed to create order");
+      setLoading(false);
+    }
   };
 
   const handleChange = (

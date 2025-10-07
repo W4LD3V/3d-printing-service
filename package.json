@@ -21,18 +21,20 @@
     "@prisma/client": "^6.16.3",
     "@types/bcryptjs": "^2.4.6",
     "@types/multer": "^2.0.0",
+    "apollo-server-micro": "^3.13.0",
     "bcryptjs": "^3.0.2",
     "graphql": "^16.11.0",
     "multer": "^2.0.2",
     "next": "15.5.4",
     "next-auth": "^4.24.11",
+    "node-fetch": "^3.3.2",
     "prisma": "^6.16.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "swr": "^2.3.6"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "^12.2.0",
+    "@cucumber/cucumber": "^10.9.0",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20.19.19",
@@ -40,14 +42,17 @@
     "@types/react-dom": "^19",
     "@wdio/cli": "^9.20.0",
     "@wdio/cucumber-framework": "^9.20.0",
+    "@wdio/globals": "^9.17.0",
     "@wdio/local-runner": "^9.20.0",
     "@wdio/selenium-standalone-service": "^8.14.0",
     "@wdio/spec-reporter": "^9.20.0",
+    "@wdio/types": "^9.20.0",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
     "selenium-standalone": "^10.0.2",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "webdriverio": "^9.20.0"
   }
 }
